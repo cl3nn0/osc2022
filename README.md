@@ -1,23 +1,27 @@
 # Operating Systems Capstone 2022
 
-This repository is homework submission for students
+| GitHub account name | Student ID | Name   |
+| ------------------- | ---------- | ------ |
+| cl3nn0              | 310551034  | 張逸軍  |
 
-## How to submit homework
+## How to build
 
-1. Fork [this repository](https://github.com/oscapstone/osc2022) on GitHub 
-    ![](images/fork_button.png)
-2. Write down following info in your `README.md`
-    - GitHub account name
-    - Student ID
-    - Your name
-3. Design and implement your kernel in forked repository
-4. Create a GitHub pull request
-    - Choose `oscapstone/osc2022` as base repository and `{your student ID}` as base branch
-    - Choose branch in your forked repository as compare branch
-    - Name it with student ID and which lab e.g. `0856085 lab0`
-    ![](images/pull_request.png)
-5. We will accept pull request when lab due date
+### Get object file from source code
+```bash
+aarch64-unknown-linux-gnu-gcc -c a.S -o a.o
+```
 
-repeat 3-5 to submit later homework/lab.
+### Get elf from object file
+```bash
+aarch64-unknown-linux-gnu-ld -T linker.ld -o kernel8.elf a.o
+```
 
-## Happy Coding ~
+### Get image file from elf
+```bash
+aarch64-unknown-linux-gnu-objcopy -O binary kernel8.elf kernel8.img
+```
+
+## Run on QEMU
+```bash
+qemu-system-aarch64 -M raspi3 -kernel kernel8.img -display none -d in_asm
+```

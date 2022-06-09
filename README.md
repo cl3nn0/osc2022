@@ -1,23 +1,69 @@
 # Operating Systems Capstone 2022
 
-This repository is homework submission for students
+| GitHub account name | Student ID | Name   |
+| ------------------- | ---------- | ------ |
+| cl3nn0              | 310551034  | 張逸軍  |
 
-## How to submit homework
+## How to build
 
-1. Fork [this repository](https://github.com/oscapstone/osc2022) on GitHub 
-    ![](images/fork_button.png)
-2. Write down following info in your `README.md`
-    - GitHub account name
-    - Student ID
-    - Your name
-3. Design and implement your kernel in forked repository
-4. Create a GitHub pull request
-    - Choose `oscapstone/osc2022` as base repository and `{your student ID}` as base branch
-    - Choose branch in your forked repository as compare branch
-    - Name it with student ID and which lab e.g. `0856085 lab0`
-    ![](images/pull_request.png)
-5. We will accept pull request when lab due date
+```bash
+make
+```
 
-repeat 3-5 to submit later homework/lab.
+## How to Run on QEMU
 
-## Happy Coding ~
+```bash
+make run
+```
+
+## How to Run on Rpi3
+
+- put files in SD card
+
+    - bootcode.bin
+
+    - fixup.dat
+
+    - start.elf
+
+    - bcm2710-rpi-3-b-plus.dtb
+
+    - bootloader.img
+
+    - config.txt
+
+    - initramfs.cpio
+
+```bash
+python3 send_kernel.py
+screen /dev/cu.usbserial-0001 115200
+```
+
+## Debug with QEMU and GDB
+
+### Run docker and copy directory to container
+
+```bash
+docker run --rm --privileged -it -v ~/Downloads/shared-docker:/root/share osc:2022
+docker cp <directory> <container ID>:/root
+```
+
+### Modify makefile (mac -> ubuntu) & compile
+
+```bash
+sh ./cross.sh
+make
+```
+
+### Run QEMU in docker
+
+```bash
+make debug
+```
+
+### Debug in docker
+
+```bash
+gdb-multiarch ./kernel/kernel8.elf
+target remote :1234
+```
